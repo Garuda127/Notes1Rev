@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -12,7 +13,7 @@ import androidx.annotation.Nullable;
 public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
     final String CREAR_TABLA_USUARIO="CREATE TABLE usuarios(nombre TEXT,usuario TEXT, contraseña TEXT)";
-    final String CREAR_TABLA_NOTAS="CREATE TABLE notas(titulo TEXT, desc TEXT, fecha TEXT, hora TEXT, nota TEXT)";
+    final String CREAR_TABLA_NOTAS="CREATE TABLE notas(_id INTEGER PRIMARY KEY AUTOINCREMENT,titulo TEXT, desc TEXT, fecha TEXT, hora TEXT, nota TEXT)";
 
     public ConexionSQLiteHelper(@Nullable Context context, @Nullable String name,
                                 @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -42,5 +43,12 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
                 "usuario","contraseña"},"usuario like '"+usu+"' "+
                 "and contraseña like '"+pass+"' ",null,null,null,null);
         return  mcursor;
+    }
+
+    void deleterow (String row_id){
+
+        SQLiteDatabase db =this.getWritableDatabase();
+        long result = db.delete(utilidades.TABLA_NOTAS,"_id=?",new String[]{row_id});
+
     }
 }

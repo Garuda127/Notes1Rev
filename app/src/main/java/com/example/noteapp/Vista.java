@@ -87,8 +87,8 @@ public class Vista extends AppCompatActivity {
 
             modelo = new Modelo();
             modelo.setImagenIcono(R.drawable.ic_baseline_sticky_note_2_24);
-            modelo.setTitulo(cursor.getString(0));
-            modelo.setCuerpo(cursor.getString(1));
+            modelo.setTitulo(cursor.getString(1));
+            modelo.setCuerpo(cursor.getString(2));
             modeloList.add(modelo);
         }
     }

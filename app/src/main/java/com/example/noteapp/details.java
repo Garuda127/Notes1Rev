@@ -37,11 +37,11 @@ public class details extends AppCompatActivity {
     TextView desc;
     TextView nota;
     TextView hor;
-
+    String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle);
+        setContentView(R.layout.activity_details);
 
 
         btnRe=(Button)findViewById(R.id.btgrab);
@@ -63,7 +63,7 @@ public class details extends AppCompatActivity {
         SQLiteDatabase cn=db.getReadableDatabase();
         String[] parametros={titulo.getText().toString()};
 
-        String[] campos={utilidades.CAMPO_FECHA,utilidades.CAMPO_HORA,utilidades.CAMPO_NOTA};
+        String[] campos={utilidades.CAMPO_FECHA,utilidades.CAMPO_HORA,utilidades.CAMPO_NOTA,utilidades.CAMPO_ID};
 
         Cursor cursor=cn.query(utilidades.TABLA_NOTAS,campos,utilidades.CAMPO_TITULO+"=?",parametros,null,null,null);
         cursor.moveToFirst();
@@ -71,6 +71,7 @@ public class details extends AppCompatActivity {
         String tres=cursor.getString(0);
         String cinco=cursor.getString(1);
         String cccc=cursor.getString(2);
+        id=cursor.getString(3);
         nota.setText(cccc);
         String horay="Hora:    "+ cinco+"   fecha de:   "+tres;
         hor.setText(horay);
@@ -81,6 +82,10 @@ public class details extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(details.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1000);
         }
+
+
+
+        ;
     }
 
 
@@ -127,6 +132,13 @@ public class details extends AppCompatActivity {
         startActivityForResult(intent.createChooser(intent,"Sleccione aplicación"),10);
     }
 
+    public void borrar(View view){
+
+        ConexionSQLiteHelper myDB=new ConexionSQLiteHelper(details.this, "db_usuarios", null, 1);
+        myDB.deleterow(id);
+        finish();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -136,5 +148,7 @@ public class details extends AppCompatActivity {
         }
     }
 
-    
+
+
+
 }

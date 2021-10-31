@@ -126,6 +126,7 @@ public class AgregarNotas extends AppCompatActivity {
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
         values.put(utilidades.CAMPO_TITULO, titu.getText().toString());
         values.put(utilidades.CAMPO_DESCRIPCION, desc.getText().toString());
         values.put(utilidades.CAMPO_FECHA, te.getText().toString());
@@ -133,7 +134,7 @@ public class AgregarNotas extends AppCompatActivity {
         values.put(utilidades.CAMPO_NOTA, nott.getText().toString());
 
 
-        Long nom = db.insert(utilidades.TABLA_NOTAS, utilidades.CAMPO_TITULO, values);
+        Long nom = db.insert(utilidades.TABLA_NOTAS, utilidades.CAMPO_ID, values);
         Toast.makeText(getApplicationContext(),"Nota creada",Toast.LENGTH_SHORT).show();
         db.close();
     }

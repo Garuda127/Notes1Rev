@@ -21,11 +21,11 @@ public class utilidades {
     public static final String CAMPO_FECHA = "fecha";
     public static final String CAMPO_HORA = "hora";
     public static final String CAMPO_NOTA = "nota";
-
+    public static final String CAMPO_ID = "_id";
 
     public static final String CREAR_TABLA_NOTAS =
             "CREATE TABLE " + TABLA_NOTAS + "" +
-                    " (" + CAMPO_TITULO + " TEXT, " +
+                    " ("+CAMPO_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + CAMPO_TITULO + " TEXT, " +
                     "" + CAMPO_DESCRIPCION+" TEXT, " +
                     "" + CAMPO_FECHA+" TEXT, " +
                     "" + CAMPO_HORA+" TEXT, " +
