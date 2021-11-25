@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="My_Notes">My Notes</string>
+    <string name="Reminder">Reminder</string>
+    <string name="Task">Task</string>
+    <string name="Search_Notes">Search Your Notes!</string>
+    <string name="Search_Reminder">Search Your Reminder!</string>
+    <string name="Search_Task">Search Your Task!</string>
+    <string name="save">Save</string>
+    <string name="Current_Date">Current Date</string>
+    <string name="Note_title">Note title</string>
+    <string name="Note_desc">Type Your Note Here</string>
+    <string name="Reminder_title">Reminder title</string>
+    <string name="Reminder_desc">Type Your Reminder Here</string>
+    <string name="Task_title">Task title</string>
+    <string name="Task_desc">Type Your Task Here</string>
+    <string name="Click_me">Click me</string>
+    <string name="Pick_color">Pick color</string>
+</resources>

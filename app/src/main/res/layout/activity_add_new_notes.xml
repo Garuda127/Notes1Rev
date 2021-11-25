@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2e2e2e"
+    tools:context=".activities.AddNewNotes">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="40dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white"/>
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/img_back"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    app:tint="@color/black"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginRight="9dp"
+                    android:background="@drawable/bg_save_btn"
+                    android:fontFamily="@font/cinzel_decorative"
+                    android:padding="7dp"
+                    android:text="@string/save"
+                    android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textDateTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/img_back"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/cinzel_decorative"
+                android:includeFontPadding="false"
+                android:text="@string/Current_Date"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/input_reminder_title"
+                android:layout_width="360dp"
+                android:layout_height="50dp"
+                android:layout_below="@+id/textDateTime"
+                android:layout_centerHorizontal="true"
+                android:backgroundTint="@color/white"
+                android:hint="@string/Note_title"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="30sp" />
+
+            <View
+                android:id="@+id/viewIndicator"
+                android:layout_width="7dp"
+                android:layout_height="180dp"
+                android:layout_below="@+id/input_reminder_title"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_indicator"/>
+
+            <EditText
+                android:id="@+id/input_task_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/input_reminder_title"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toRightOf="@id/viewIndicator"
+                android:background="@null"
+                android:ellipsize="end"
+                android:fontFamily="@font/cinzel_decorative"
+                android:hint="@string/Note_desc"
+                android:importantForAutofill="no"
+                android:includeFontPadding="false"
+                android:inputType="textMultiLine"
+                android:maxLines="8"
+                android:minHeight="48dp"
+                android:paddingTop="8dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="14sp" />
+            <View
+                android:layout_alignParentRight="true"
+                android:id="@+id/viewIndicator2"
+                android:layout_width="7dp"
+                android:layout_height="180dp"
+                android:layout_below="@+id/input_reminder_title"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_indicator"/>
+        </RelativeLayout>
+    </ScrollView>
+
+    <include layout="@layout/bottom_sheet_dialog"/>
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
