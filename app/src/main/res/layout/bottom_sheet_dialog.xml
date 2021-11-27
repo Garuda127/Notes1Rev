@@ -5,12 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:behavior_peekHeight="40dp"
+    android:id="@+id/botton_layout"
     android:background="@drawable/bg_buttom_sheet"
     app:layout_behavior="@string/bottom_sheet_behavior"
 
     >
 
     <TextView
+        android:id="@+id/bottom_text"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/averia_gruesa_libre"

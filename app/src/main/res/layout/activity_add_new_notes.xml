@@ -29,18 +29,19 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentLeft="true" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginRight="9dp"
-                    android:background="@drawable/bg_save_btn"
-                    android:fontFamily="@font/cinzel_decorative"
-                    android:padding="7dp"
-                    android:text="@string/save"
-                    android:textColor="@color/white" />
+            <TextView
+                android:id="@+id/btn_Save_Note"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="6dp"
+                android:layout_marginRight="9dp"
+                android:background="@drawable/bg_save_btn"
+                android:fontFamily="@font/cinzel_decorative"
+                android:padding="7dp"
+                android:text="@string/save"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/textDateTime"
@@ -57,7 +58,7 @@
                 android:textColor="@color/white" />
 
             <EditText
-                android:id="@+id/input_reminder_title"
+                android:id="@+id/input_note_title"
                 android:layout_width="360dp"
                 android:layout_height="50dp"
                 android:layout_below="@+id/textDateTime"
@@ -76,17 +77,16 @@
                 android:id="@+id/viewIndicator"
                 android:layout_width="7dp"
                 android:layout_height="180dp"
-                android:layout_below="@+id/input_reminder_title"
+                android:layout_below="@+id/input_note_title"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_indicator"/>
 
             <EditText
-                android:id="@+id/input_task_text"
+                android:id="@+id/input_note_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/input_reminder_title"
+                android:layout_below="@id/input_note_title"
                 android:layout_alignParentRight="true"
-                android:layout_margin="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
@@ -110,7 +110,7 @@
                 android:id="@+id/viewIndicator2"
                 android:layout_width="7dp"
                 android:layout_height="180dp"
-                android:layout_below="@+id/input_reminder_title"
+                android:layout_below="@+id/input_note_title"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_indicator"/>
         </RelativeLayout>
