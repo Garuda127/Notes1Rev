@@ -1,5 +1,6 @@
 package com.example.notasstiky.adapters;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -75,6 +76,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
             }
             else {
                 gradientDrawable.setColor(Color.parseColor("#FF937B"));
+            }
+            if (noteEntities.getImagePath() != null){
+                roundedImageView.setImageBitmap(BitmapFactory.decodeFile(noteEntities.getImagePath()));
+                roundedImageView.setVisibility(View.VISIBLE);
+            }else{
+                roundedImageView.setVisibility(View.GONE);
             }
 
         }

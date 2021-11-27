@@ -1,15 +1,27 @@
 package com.example.notasstiky.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +34,7 @@ import com.example.notasstiky.database.MyNoteDatabase;
 import com.example.notasstiky.entities.MyNoteEntities;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,6 +44,11 @@ private EditText inputNoteTitle,inputNoteText;
 private TextView textDateTime,saveNote;
 private View indicator1,indicator2;
 String selectedColor;
+
+ImageView addImg;
+private String SelectdImg;
+public static final int STORAGE_PERMISSION = 1;
+    public static final int SELECT_IMG = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -44,8 +62,10 @@ String selectedColor;
         inputNoteText=findViewById(R.id.input_note_text);
         inputNoteTitle=findViewById(R.id.input_reminder_title);
         textDateTime=findViewById(R.id.textDateTime);
+        addImg=findViewById(R.id.image_note);
 
         selectedColor="#FF937B";
+        SelectdImg="";
         saveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,11 +100,16 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
             Toast.makeText(this,"Texto de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
         }
+
+
     final MyNoteEntities myNoteEntities = new MyNoteEntities();
     myNoteEntities.setTitle(inputNoteTitle.getText().toString());
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
+        myNoteEntities.setImagePath(SelectdImg);
+
+
         class SaveNote extends AsyncTask<Void, Void,Void> {
             @Override
             protected Void doInBackground(Void... voids){
@@ -168,5 +193,86 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
                 setViewColor();
             }
         });
+
+        //////////////////////////////////////////////////Agregar img
+        linearLayout.findViewById(R.id.add_img).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view){
+               bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+               if (ContextCompat.checkSelfPermission(
+                       getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+               ) != PackageManager.PERMISSION_GRANTED){
+                   ActivityCompat.requestPermissions(
+                           AddNewNotes.this,
+                           new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                           STORAGE_PERMISSION
+                   );
+               }else {
+                   selectYourImage();
+               }
+
+
+           }
+        });
+    }
+
+    private void selectYourImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if (intent.resolveActivity(getPackageManager())!= null){
+            startActivityForResult(intent,SELECT_IMG);
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == STORAGE_PERMISSION && grantResults.length>0){
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                selectYourImage();
+            }else{
+                Toast.makeText(this, "Sin Permisos!", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode== SELECT_IMG && resultCode == RESULT_OK){
+            if(data != null){
+                Uri selectImageUri = data.getData();
+                if(selectImageUri != null){
+                    try {
+                        InputStream inputStream= getContentResolver().openInputStream(selectImageUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        addImg.setImageBitmap(bitmap);
+                        addImg.setVisibility(View.VISIBLE);
+                        SelectdImg= getPathFromUri(selectImageUri);
+                    }catch (Exception exception){
+                        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    }
+
+    private String getPathFromUri(Uri uri){
+        String filePath;
+        Cursor cursor = getContentResolver()
+                .query(uri,null,null,null,null);
+        if(cursor == null){
+            filePath = uri.getPath();
+        }else{
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex("_data");
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+
+        return filePath;
     }
 }
