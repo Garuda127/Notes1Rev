@@ -32,6 +32,7 @@
                 app:tint="@color/black" />
 
             <TextView
+                android:id="@+id/btn_save_reminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"

@@ -1,5 +1,8 @@
 package com.example.notasstiky.activities;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -13,9 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.database.MyNoteDatabase;
@@ -42,7 +42,7 @@ String selectedColor;
         indicator2=findViewById(R.id.viewIndicator2);
         saveNote=findViewById(R.id.btn_Save_Note);
         inputNoteText=findViewById(R.id.input_note_text);
-        inputNoteTitle=findViewById(R.id.input_note_title);
+        inputNoteTitle=findViewById(R.id.input_reminder_title);
         textDateTime=findViewById(R.id.textDateTime);
 
         selectedColor="#FF937B";

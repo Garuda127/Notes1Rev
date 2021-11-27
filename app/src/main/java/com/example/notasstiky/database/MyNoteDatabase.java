@@ -8,8 +8,9 @@ import androidx.room.RoomDatabase;
 
 import com.example.notasstiky.dao.MyNotesDao;
 import com.example.notasstiky.entities.MyNoteEntities;
+import com.example.notasstiky.entities.MyReminderEntities;
 
-@Database(entities = MyNoteEntities.class,version = 1,exportSchema = false)
+@Database(entities = {MyNoteEntities.class, MyReminderEntities.class},version = 1,exportSchema = false)
 public abstract class MyNoteDatabase extends RoomDatabase {
 
     private static MyNoteDatabase myNoteDatabase;

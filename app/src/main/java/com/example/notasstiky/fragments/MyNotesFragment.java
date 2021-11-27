@@ -4,17 +4,19 @@ import static android.app.Activity.RESULT_OK;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.activities.AddNewNotes;
@@ -51,7 +53,7 @@ public class MyNotesFragment extends Fragment {
         }
     });
 
-    noteRec = view.findViewById(R.id.note_rec);
+    noteRec = view.findViewById(R.id.reminder_rec);
     noteRec.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
     noteEntitiesList = new ArrayList<>();
     myNoteAdapter = new MyNoteAdapter(noteEntitiesList);

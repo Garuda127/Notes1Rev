@@ -62,10 +62,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
         }
 
         public void setNote(MyNoteEntities noteEntities) {
+            //Obtiene los datos y los inserta en los textview
             title.setText(noteEntities.getTitle());
             textNote.setText(noteEntities.getNoteText());
             dateTime.setText(noteEntities.getDateTime());
 
+            //Obtiene el color de las notas y las agrega
             GradientDrawable gradientDrawable = (GradientDrawable) linearLayout.getBackground();
             if (noteEntities.getColor() != null){
                 gradientDrawable.setColor(Color.parseColor(noteEntities.getColor()));
