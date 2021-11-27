@@ -39,10 +39,10 @@ public class AddNewReminderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_reminder);
-        TextView saveNote=findViewById(R.id.btn_save_reminder);
-        view = findViewById(R.id.View_reminder);
-        title=findViewById(R.id.input_reminder_title);
-        textDateTime= findViewById(R.id.textDateTime);
+    TextView saveNote=findViewById(R.id.btn_save_reminder);
+    view = findViewById(R.id.View_reminder);
+    title=findViewById(R.id.input_reminder_title);
+    textDateTime= findViewById(R.id.textDateTime);
 
         selectedReminderColor="#FF937B";
         saveNote.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
         if (title.getText().toString().trim().isEmpty()){
             Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
-        }
+    }
         final MyReminderEntities myNoteEntities = new MyReminderEntities();
         myNoteEntities.setTitle(title.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
@@ -91,7 +91,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
         new SaveReminder().execute();
 
 
-    }
+}
 
     private void setViewColor() {
         GradientDrawable gradientDrawable = (GradientDrawable) view.getBackground();

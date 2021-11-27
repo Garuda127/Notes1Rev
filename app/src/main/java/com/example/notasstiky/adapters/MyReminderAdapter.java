@@ -25,12 +25,12 @@ public class MyReminderAdapter extends RecyclerView.Adapter<MyReminderAdapter.Vi
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyReminderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyReminderAdapter.ViewHolder holder, int position) {
 
         holder.setReminder(reminderEntities.get(position));
 

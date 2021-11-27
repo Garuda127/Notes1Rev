@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReminderFragment extends Fragment {
-    ImageView addReminder;
+ImageView addReminder;
 
     private RecyclerView noteRec;
     private List<MyReminderEntities> noteEntitiesList;
@@ -41,19 +41,19 @@ public class ReminderFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_reminder, container, false);
-        addReminder=view.findViewById(R.id.add_reminder);
-        addReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivityForResult(new Intent(getContext(), AddNewReminderActivity.class),1);
-            }
-        });
+    addReminder=view.findViewById(R.id.add_reminder);
+    addReminder.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            startActivityForResult(new Intent(getContext(), AddNewReminderActivity.class),1);
+        }
+    });
         noteRec = view.findViewById(R.id.reminder_rec);
         noteRec.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         noteEntitiesList = new ArrayList<>();
         myNoteAdapter = new MyReminderAdapter(noteEntitiesList);
         noteRec.setAdapter(myNoteAdapter);
-
+        
         getAllReminder();
 
         return view;
@@ -65,7 +65,7 @@ public class ReminderFragment extends Fragment {
 
             @Override
             protected List<MyReminderEntities> doInBackground(Void... voids) {
-                return MyNoteDatabase
+                  return MyNoteDatabase
                         .getMyNoteDatabase(getActivity().getApplicationContext())
                         .notesDao()
                         .getAllReminder();
@@ -83,9 +83,9 @@ public class ReminderFragment extends Fragment {
                 }
                 noteRec.smoothScrollToPosition(0);
             }
+            }
+            new GetAllReminder().execute();
         }
-        new GetAllReminder().execute();
-    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -94,4 +94,4 @@ public class ReminderFragment extends Fragment {
         }
     }
 
-}
+    }

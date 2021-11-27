@@ -22,8 +22,8 @@ public abstract class MyNoteDatabase extends RoomDatabase {
                     MyNoteDatabase.class,
                     "note_db"
             ).build()
-            ;        }
+;        }
         return myNoteDatabase;
     }
-    public abstract MyNotesDao notesDao();
+public abstract MyNotesDao notesDao();
 }

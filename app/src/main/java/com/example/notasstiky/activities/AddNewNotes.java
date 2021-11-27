@@ -40,14 +40,14 @@ import java.util.Locale;
 
 public class AddNewNotes extends AppCompatActivity {
 
-    private EditText inputNoteTitle,inputNoteText;
-    private TextView textDateTime,saveNote;
-    private View indicator1,indicator2;
-    String selectedColor;
+private EditText inputNoteTitle,inputNoteText;
+private TextView textDateTime,saveNote;
+private View indicator1,indicator2;
+String selectedColor;
 
-    ImageView addImg;
-    private String SelectdImg;
-    public static final int STORAGE_PERMISSION = 1;
+ImageView addImg;
+private String SelectdImg;
+public static final int STORAGE_PERMISSION = 1;
     public static final int SELECT_IMG = 1;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -75,7 +75,7 @@ public class AddNewNotes extends AppCompatActivity {
 
         textDateTime.setText(
                 new SimpleDateFormat("EEEE,dd MMMM yyyy HH:mm a", Locale.getDefault())
-                        .format(new Date())
+                .format(new Date())
         );
 
         bottonSheet();
@@ -92,18 +92,18 @@ public class AddNewNotes extends AppCompatActivity {
     }
 
     private void saveNote() {
-        if (inputNoteTitle.getText().toString().trim().isEmpty()){
-            Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
-            return;
-        }else
-        if (inputNoteText.getText().toString().trim().isEmpty()){
+if (inputNoteTitle.getText().toString().trim().isEmpty()){
+    Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
+    return;
+}else
+    if (inputNoteText.getText().toString().trim().isEmpty()){
             Toast.makeText(this,"Texto de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
         }
 
 
-        final MyNoteEntities myNoteEntities = new MyNoteEntities();
-        myNoteEntities.setTitle(inputNoteTitle.getText().toString());
+    final MyNoteEntities myNoteEntities = new MyNoteEntities();
+    myNoteEntities.setTitle(inputNoteTitle.getText().toString());
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
@@ -196,23 +196,23 @@ public class AddNewNotes extends AppCompatActivity {
 
         //////////////////////////////////////////////////Agregar img
         linearLayout.findViewById(R.id.add_img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
-                if (ContextCompat.checkSelfPermission(
-                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(
-                            AddNewNotes.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            STORAGE_PERMISSION
-                    );
-                }else {
-                    selectYourImage();
-                }
+           @Override
+           public void onClick(View view){
+               bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+               if (ContextCompat.checkSelfPermission(
+                       getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+               ) != PackageManager.PERMISSION_GRANTED){
+                   ActivityCompat.requestPermissions(
+                           AddNewNotes.this,
+                           new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                           STORAGE_PERMISSION
+                   );
+               }else {
+                   selectYourImage();
+               }
 
 
-            }
+           }
         });
     }
 

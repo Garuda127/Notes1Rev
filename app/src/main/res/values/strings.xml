@@ -17,4 +17,7 @@
     <string name="Task_desc">Type Your Task Here</string>
     <string name="Click_me">Click me</string>
     <string name="Pick_color">Pick color</string>
+    <string name="Heading">Heading</string>
+    <string name="Date_time">Date and Time</string>
+    <string name="Add_image">Add image</string>
 </resources>

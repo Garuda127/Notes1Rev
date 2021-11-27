@@ -19,7 +19,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.util.List;
 
 public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolder>{
-    List<MyNoteEntities> noteEntitiesList;
+   List<MyNoteEntities> noteEntitiesList;
 
     public MyNoteAdapter(List<MyNoteEntities> noteEntities) {
         this.noteEntitiesList = noteEntities;
@@ -48,9 +48,9 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title,textNote,dateTime;
-        private LinearLayout linearLayout;
-        RoundedImageView roundedImageView;
+ private TextView title,textNote,dateTime;
+ private LinearLayout linearLayout;
+ RoundedImageView roundedImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/cinzel_decorative"
+        android:fontFamily="@font/averia_gruesa_libre"
         android:letterSpacing=".2"
         android:text="@string/My_Notes"
         android:textColor="@color/black"
@@ -34,7 +34,7 @@
         android:background="@drawable/search_bg"
         android:drawableRight="@drawable/ic_baseline_search_24"
         android:drawablePadding="9dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/averia_gruesa_libre"
         android:hint="@string/Search_Notes"
         android:minHeight="48dp"
         android:padding="10dp"
@@ -55,7 +55,7 @@
         app:layout_constraintStart_toEndOf="@+id/editTextSearch_note" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/note_rec"
+        android:id="@+id/reminder_rec"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"

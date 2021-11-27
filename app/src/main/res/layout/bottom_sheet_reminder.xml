@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/reminder_bottom"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     app:behavior_peekHeight="40dp"
@@ -11,6 +12,7 @@
     >
 
     <TextView
+        android:id="@+id/bottom_text_reminder"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:fontFamily="@font/averia_gruesa_libre"
@@ -34,12 +36,12 @@
             android:layout_weight="1"
             >
             <View
-                android:id="@+id/viewColor1"
+                android:id="@+id/viewReminderColor1"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_reminder_color"/>
             <ImageView
-                android:id="@+id/imageColor1"
+                android:id="@+id/imageReminderColor1"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:src="@drawable/ic_baseline_done_24"
@@ -53,12 +55,12 @@
             android:layout_weight="1"
             >
             <View
-                android:id="@+id/viewColor2"
+                android:id="@+id/viewReminderColor2"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_reminder_color2"/>
             <ImageView
-                android:id="@+id/imageColor2"
+                android:id="@+id/imageReminderColor2"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
 
@@ -72,12 +74,12 @@
             android:layout_weight="1"
             >
             <View
-                android:id="@+id/viewColor3"
+                android:id="@+id/viewReminderColor3"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_reminder_color3"/>
             <ImageView
-                android:id="@+id/imageColor3"
+                android:id="@+id/imageReminderColor3"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
 
@@ -91,12 +93,12 @@
             android:layout_weight="1"
             >
             <View
-                android:id="@+id/viewColor4"
+                android:id="@+id/viewReminderColor4"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:background="@drawable/bg_reminder_color4"/>
             <ImageView
-                android:id="@+id/imageColor4"
+                android:id="@+id/imageReminderColor4"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
 
