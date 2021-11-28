@@ -1,5 +1,6 @@
 package com.example.notasstiky.adapters;
 
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -13,15 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.entities.MyNoteEntities;
+import com.example.notasstiky.listeners.MyNoteListeners;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
 public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolder>{
    List<MyNoteEntities> noteEntitiesList;
+   MyNoteListeners myNoteListeners;
 
-    public MyNoteAdapter(List<MyNoteEntities> noteEntities) {
-        this.noteEntitiesList = noteEntities;
+    public MyNoteAdapter(List<MyNoteEntities> noteEntitiesList, MyNoteListeners myNoteListeners) {
+        this.noteEntitiesList = noteEntitiesList;
+        this.myNoteListeners = myNoteListeners;
     }
 
     @NonNull
@@ -34,6 +38,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.setNote(noteEntitiesList.get(position));
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myNoteListeners.myNoteClick(noteEntitiesList.get(position),position);
+            }
+        });
     }
 
     @Override
@@ -62,10 +72,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
         }
 
         public void setNote(MyNoteEntities noteEntities) {
+            //Obtiene los datos y los inserta en los textview
             title.setText(noteEntities.getTitle());
             textNote.setText(noteEntities.getNoteText());
             dateTime.setText(noteEntities.getDateTime());
 
+            //Obtiene el color de las notas y las agrega
             GradientDrawable gradientDrawable = (GradientDrawable) linearLayout.getBackground();
             if (noteEntities.getColor() != null){
                 gradientDrawable.setColor(Color.parseColor(noteEntities.getColor()));
@@ -73,6 +85,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
             }
             else {
                 gradientDrawable.setColor(Color.parseColor("#FF937B"));
+            }
+            if (noteEntities.getImagePath() != null){
+                roundedImageView.setImageBitmap(BitmapFactory.decodeFile(noteEntities.getImagePath()));
+                roundedImageView.setVisibility(View.VISIBLE);
+            }else{
+                roundedImageView.setVisibility(View.GONE);
             }
 
         }

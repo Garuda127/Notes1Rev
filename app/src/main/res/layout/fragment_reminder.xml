@@ -43,6 +43,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reminder_rec"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:clipToPadding="false"
+        android:paddingStart="0dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch_reminder" />
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -52,6 +66,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/editTextSearch_reminder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextSearch_reminder" />
+
+
     <ImageView
         android:id="@+id/add_reminder"
         android:layout_width="50dp"

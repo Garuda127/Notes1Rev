@@ -1,9 +1,9 @@
 package com.example.notasstiky.activities;
 
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+
+import android.os.Bundle;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.fragments.MyNotesFragment;
