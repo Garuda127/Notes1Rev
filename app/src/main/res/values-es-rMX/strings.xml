@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Notas</string>
+    <string name="My_Notes">Mis Notas</string>
+    <string name="Reminder">Recordatorio</string>
+    <string name="Task">Tareas</string>
+    <string name="Search_Notes">Busca tus Notas!</string>
+    <string name="Search_Reminder">Busca tus Recordatorios!</string>
+    <string name="Search_Task">Busca tus Tareas!</string>
+    <string name="save">Guardar</string>
+    <string name="Current_Date">Fecha actual</string>
+    <string name="Note_title">Titulo de Nota</string>
+    <string name="Note_desc">Escribe tu Nota aqui</string>
+    <string name="Reminder_title">Titulo de Recordatorio</string>
+    <string name="Reminder_desc">Escribe tu Recordatorio aqui</string>
+    <string name="Task_title">Titulo de Tarea</string>
+    <string name="Task_desc">Escribe tu Tarea aqui</string>
+    <string name="Pick_color">Escoge Color</string>
+    <string name="Add_image">Añadir Imagen</string>
+    <string name="Delete_Note">Borrar Nota</string>
+    <string name="Delete_confirm">¿Estás seguro de que quieres eliminar esta nota?</string>
+    <string name="Completado">Completado</string>
+    <string name="Pendiente">Pendiente</string>
+    <string name="Delete_Reminder">Borrar Recordatorio</string>
+</resources>

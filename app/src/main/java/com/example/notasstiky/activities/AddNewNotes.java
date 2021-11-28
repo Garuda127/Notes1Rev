@@ -44,19 +44,19 @@ import java.util.Locale;
 
 public class AddNewNotes extends AppCompatActivity {
 
-    private EditText inputNoteTitle,inputNoteText;
-    private TextView textDateTime,saveNote;
-    private View indicator1,indicator2;
-    String selectedColor;
+private EditText inputNoteTitle,inputNoteText;
+private TextView textDateTime,saveNote;
+private View indicator1,indicator2;
+String selectedColor;
 
-    ImageView addImg;
-    private String SelectdImg;
+ImageView addImg;
+private String SelectdImg;
 
-    private MyNoteEntities alreadyAvailableNote;
+private MyNoteEntities alreadyAvailableNote;
 
-    public static final int STORAGE_PERMISSION = 1;
+public static final int STORAGE_PERMISSION = 1;
     public static final int SELECT_IMG = 1;
-    private AlertDialog alertDialog;
+private AlertDialog alertDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -71,6 +71,13 @@ public class AddNewNotes extends AppCompatActivity {
         inputNoteTitle=findViewById(R.id.input_reminder_title);
         textDateTime=findViewById(R.id.textDateTime);
         addImg=findViewById(R.id.image_note);
+
+        findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         selectedColor="#FF937B";
         SelectdImg="";
@@ -90,7 +97,7 @@ public class AddNewNotes extends AppCompatActivity {
 
         textDateTime.setText(
                 new SimpleDateFormat("EEEE,dd MMMM yyyy HH:mm a", Locale.getDefault())
-                        .format(new Date())
+                .format(new Date())
         );
 
         bottonSheet();
@@ -120,18 +127,18 @@ public class AddNewNotes extends AppCompatActivity {
     }
 
     private void saveNote() {
-        if (inputNoteTitle.getText().toString().trim().isEmpty()){
-            Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
-            return;
-        }else
-        if (inputNoteText.getText().toString().trim().isEmpty()){
+if (inputNoteTitle.getText().toString().trim().isEmpty()){
+    Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
+    return;
+}else
+    if (inputNoteText.getText().toString().trim().isEmpty()){
             Toast.makeText(this,"Texto de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
         }
 
 
-        final MyNoteEntities myNoteEntities = new MyNoteEntities();
-        myNoteEntities.setTitle(inputNoteTitle.getText().toString());
+    final MyNoteEntities myNoteEntities = new MyNoteEntities();
+    myNoteEntities.setTitle(inputNoteTitle.getText().toString());
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
@@ -247,23 +254,23 @@ public class AddNewNotes extends AppCompatActivity {
 
         //////////////////////////////////////////////////Agregar img
         linearLayout.findViewById(R.id.add_img).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view){
-                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
-                if (ContextCompat.checkSelfPermission(
-                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(
-                            AddNewNotes.this,
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            STORAGE_PERMISSION
-                    );
-                }else {
-                    selectYourImage();
-                }
+           @Override
+           public void onClick(View view){
+               bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+               if (ContextCompat.checkSelfPermission(
+                       getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+               ) != PackageManager.PERMISSION_GRANTED){
+                   ActivityCompat.requestPermissions(
+                           AddNewNotes.this,
+                           new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                           STORAGE_PERMISSION
+                   );
+               }else {
+                   selectYourImage();
+               }
 
 
-            }
+           }
         });
 
         if (alreadyAvailableNote != null){
@@ -287,43 +294,43 @@ public class AddNewNotes extends AppCompatActivity {
 
             builder.setView(view);
             alertDialog = builder.create() ;
-            if (alertDialog.getWindow() != null){
-                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
-            }
-            view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
-                @Override
+        if (alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
+            @Override
                 public void onClick(View view) {
-                    class DeleteNoteTask extends  AsyncTask<Void,Void,Void>{
+                class DeleteNoteTask extends  AsyncTask<Void,Void,Void>{
 
-                        @Override
-                        protected Void doInBackground(Void... voids) {
+                    @Override
+                    protected Void doInBackground(Void... voids) {
 
-                            MyNoteDatabase.getMyNoteDatabase(getApplicationContext()).notesDao().deleteNote(alreadyAvailableNote);
-                            return null;
-                        }
-
-                        @Override
-                        protected void onPostExecute(Void unused) {
-                            super.onPostExecute(unused);
-
-                            Intent intent = new Intent();
-                            intent.putExtra("isNoteDeleted",true);
-                            setResult(RESULT_OK,intent);
-                            finish();
-
-                        }
+                        MyNoteDatabase.getMyNoteDatabase(getApplicationContext()).notesDao().deleteNote(alreadyAvailableNote);
+                        return null;
                     }
 
-                    new DeleteNoteTask().execute();
+                    @Override
+                    protected void onPostExecute(Void unused) {
+                        super.onPostExecute(unused);
+
+                        Intent intent = new Intent();
+                        intent.putExtra("isNoteDeleted",true);
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+                    }
                 }
+
+                    new DeleteNoteTask().execute();
+            }
             });
 
-            view.findViewById(R.id.textCancelNote).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    alertDialog.dismiss();
-                }
-            });
+        view.findViewById(R.id.textCancelNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
         }
 
         alertDialog.show();

@@ -1,8 +1,11 @@
 package com.example.notasstiky.adapters;
 
+import android.annotation.SuppressLint;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +20,22 @@ import com.example.notasstiky.entities.MyNoteEntities;
 import com.example.notasstiky.listeners.MyNoteListeners;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolder>{
    List<MyNoteEntities> noteEntitiesList;
    MyNoteListeners myNoteListeners;
 
+   private List<MyNoteEntities> noteSearch;
+   private Timer timer;
+
     public MyNoteAdapter(List<MyNoteEntities> noteEntitiesList, MyNoteListeners myNoteListeners) {
         this.noteEntitiesList = noteEntitiesList;
         this.myNoteListeners = myNoteListeners;
+        noteSearch = noteEntitiesList;
     }
 
     @NonNull
@@ -35,7 +45,7 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.setNote(noteEntitiesList.get(position));
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +103,43 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
                 roundedImageView.setVisibility(View.GONE);
             }
 
+        }
+    }
+
+    public  void searchNote(final String searchKey){
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (searchKey.trim().isEmpty()){
+                    noteEntitiesList = noteSearch;
+                }else{
+                    ArrayList<MyNoteEntities> temp = new ArrayList<>();
+                    for (MyNoteEntities entities : noteSearch){
+                        if(entities.getTitle().toLowerCase().contains(searchKey.toLowerCase())
+                        || entities.getNoteText().toLowerCase().contains(searchKey.toLowerCase())){
+
+                            temp.add(entities);
+
+                        }
+                    }
+                    noteEntitiesList = temp;
+
+                }
+                new Handler(Looper.getMainLooper()).post(new Runnable(){
+                    @Override
+                    public  void run(){
+                        notifyDataSetChanged();
+                    }
+                });
+
+            }
+        },500);
+    }
+
+    public void cancelTimer(){
+        if(timer != null){
+            timer.cancel();
         }
     }
 }

@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.reminder:
                         fragment= new ReminderFragment();
                         break;
-                    case R.id.task:
-                        fragment= new TaskFragment();
-                        break;
+
 
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
