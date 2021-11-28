@@ -6,20 +6,18 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.example.notasstiky.R;
 import com.example.notasstiky.activities.AddNewReminderActivity;
-import com.example.notasstiky.adapters.MyNoteAdapter;
 import com.example.notasstiky.adapters.MyReminderAdapter;
 import com.example.notasstiky.database.MyNoteDatabase;
 import com.example.notasstiky.entities.MyReminderEntities;

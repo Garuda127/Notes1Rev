@@ -20,9 +20,9 @@ public interface MyNotesDao {
     void  insertNote(MyNoteEntities noteEntities);
     @Delete
     void deleteNote(MyNoteEntities noteEntities);
-/////////////////////////////////////////////////Reminder
-@Query("SELECT * FROM reminder ORDER BY id DESC")
-List<MyReminderEntities> getAllReminder();
+    /////////////////////////////////////////////////Reminder
+    @Query("SELECT * FROM reminder ORDER BY id DESC")
+    List<MyReminderEntities> getAllReminder();
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void  insertReminder(MyReminderEntities reminderEntities);
     @Delete

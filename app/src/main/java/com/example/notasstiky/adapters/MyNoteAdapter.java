@@ -14,15 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.entities.MyNoteEntities;
+import com.example.notasstiky.listeners.MyNoteListeners;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
 public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolder>{
    List<MyNoteEntities> noteEntitiesList;
+   MyNoteListeners myNoteListeners;
 
-    public MyNoteAdapter(List<MyNoteEntities> noteEntities) {
-        this.noteEntitiesList = noteEntities;
+    public MyNoteAdapter(List<MyNoteEntities> noteEntitiesList, MyNoteListeners myNoteListeners) {
+        this.noteEntitiesList = noteEntitiesList;
+        this.myNoteListeners = myNoteListeners;
     }
 
     @NonNull
@@ -35,6 +38,12 @@ public class MyNoteAdapter extends  RecyclerView.Adapter<MyNoteAdapter.ViewHolde
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.setNote(noteEntitiesList.get(position));
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myNoteListeners.myNoteClick(noteEntitiesList.get(position),position);
+            }
+        });
     }
 
     @Override

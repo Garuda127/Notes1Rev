@@ -3,6 +3,7 @@ package com.example.notasstiky.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
@@ -22,7 +24,9 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,15 +44,19 @@ import java.util.Locale;
 
 public class AddNewNotes extends AppCompatActivity {
 
-private EditText inputNoteTitle,inputNoteText;
-private TextView textDateTime,saveNote;
-private View indicator1,indicator2;
-String selectedColor;
+    private EditText inputNoteTitle,inputNoteText;
+    private TextView textDateTime,saveNote;
+    private View indicator1,indicator2;
+    String selectedColor;
 
-ImageView addImg;
-private String SelectdImg;
-public static final int STORAGE_PERMISSION = 1;
+    ImageView addImg;
+    private String SelectdImg;
+
+    private MyNoteEntities alreadyAvailableNote;
+
+    public static final int STORAGE_PERMISSION = 1;
     public static final int SELECT_IMG = 1;
+    private AlertDialog alertDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -66,6 +74,13 @@ public static final int STORAGE_PERMISSION = 1;
 
         selectedColor="#FF937B";
         SelectdImg="";
+
+        if(getIntent().getBooleanExtra("updateOrView",false)){
+            alreadyAvailableNote = (MyNoteEntities)  getIntent().getSerializableExtra("myNotes");
+            setViewUpdate();
+
+        }
+
         saveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,11 +90,24 @@ public static final int STORAGE_PERMISSION = 1;
 
         textDateTime.setText(
                 new SimpleDateFormat("EEEE,dd MMMM yyyy HH:mm a", Locale.getDefault())
-                .format(new Date())
+                        .format(new Date())
         );
 
         bottonSheet();
         setViewColor();
+    }
+
+    private void setViewUpdate() {
+        inputNoteTitle.setText(alreadyAvailableNote.getTitle());
+        inputNoteText.setText(alreadyAvailableNote.getNoteText());
+        textDateTime.setText(alreadyAvailableNote.getDateTime());
+        if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()){
+
+            addImg.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
+            addImg.setVisibility(View.VISIBLE);
+            findViewById(R.id.img_remove).setVisibility(View.VISIBLE);
+            SelectdImg = alreadyAvailableNote.getImagePath();
+        }
     }
 
     private void setViewColor() {
@@ -92,22 +120,26 @@ public static final int STORAGE_PERMISSION = 1;
     }
 
     private void saveNote() {
-if (inputNoteTitle.getText().toString().trim().isEmpty()){
-    Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
-    return;
-}else
-    if (inputNoteText.getText().toString().trim().isEmpty()){
+        if (inputNoteTitle.getText().toString().trim().isEmpty()){
+            Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
+            return;
+        }else
+        if (inputNoteText.getText().toString().trim().isEmpty()){
             Toast.makeText(this,"Texto de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
         }
 
 
-    final MyNoteEntities myNoteEntities = new MyNoteEntities();
-    myNoteEntities.setTitle(inputNoteTitle.getText().toString());
+        final MyNoteEntities myNoteEntities = new MyNoteEntities();
+        myNoteEntities.setTitle(inputNoteTitle.getText().toString());
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
         myNoteEntities.setImagePath(SelectdImg);
+
+        if(alreadyAvailableNote !=null){
+            myNoteEntities.setId(alreadyAvailableNote.getId());
+        }
 
 
         class SaveNote extends AsyncTask<Void, Void,Void> {
@@ -147,6 +179,9 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         final ImageView imgColor2= linearLayout.findViewById(R.id.imageColor2);
         final ImageView imgColor3= linearLayout.findViewById(R.id.imageColor3);
         final ImageView imgColor4= linearLayout.findViewById(R.id.imageColor4);
+
+
+
         /*escoger color del sheetDialog y poner palomita*/
         linearLayout.findViewById(R.id.viewColor1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,26 +229,104 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
             }
         });
 
+        ////////////////////////////////////
+        if (alreadyAvailableNote != null && alreadyAvailableNote.getColor()!= null && !alreadyAvailableNote.getColor().trim().isEmpty()){
+
+            switch (alreadyAvailableNote.getColor()){
+                case "#FFFB7B":
+                    linearLayout.findViewById(R.id.viewColor2).performClick();
+                    break;
+                case "#ADFF7B":
+                    linearLayout.findViewById(R.id.viewColor3).performClick();
+                    break;
+                case "#969CFF":
+                    linearLayout.findViewById(R.id.viewColor4).performClick();
+                    break;
+            }
+        }
+
         //////////////////////////////////////////////////Agregar img
         linearLayout.findViewById(R.id.add_img).setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view){
-               bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
-               if (ContextCompat.checkSelfPermission(
-                       getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
-               ) != PackageManager.PERMISSION_GRANTED){
-                   ActivityCompat.requestPermissions(
-                           AddNewNotes.this,
-                           new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                           STORAGE_PERMISSION
-                   );
-               }else {
-                   selectYourImage();
-               }
+            @Override
+            public void onClick(View view){
+                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+                if (ContextCompat.checkSelfPermission(
+                        getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(
+                            AddNewNotes.this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            STORAGE_PERMISSION
+                    );
+                }else {
+                    selectYourImage();
+                }
 
 
-           }
+            }
         });
+
+        if (alreadyAvailableNote != null){
+            linearLayout.findViewById(R.id.delete_img1).setVisibility(View.VISIBLE);
+            linearLayout.findViewById(R.id.delete_img1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    showDeleteDialog();
+                }
+            });
+        }
+
+    }
+
+    private void showDeleteDialog() {
+        if (alertDialog == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddNewNotes.this);
+            View view = LayoutInflater.from(this).inflate(R.layout.layout_delete_note,
+                    (ViewGroup) findViewById(R.id.layoutDeleteNote_Container));
+
+            builder.setView(view);
+            alertDialog = builder.create() ;
+            if (alertDialog.getWindow() != null){
+                alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            }
+            view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    class DeleteNoteTask extends  AsyncTask<Void,Void,Void>{
+
+                        @Override
+                        protected Void doInBackground(Void... voids) {
+
+                            MyNoteDatabase.getMyNoteDatabase(getApplicationContext()).notesDao().deleteNote(alreadyAvailableNote);
+                            return null;
+                        }
+
+                        @Override
+                        protected void onPostExecute(Void unused) {
+                            super.onPostExecute(unused);
+
+                            Intent intent = new Intent();
+                            intent.putExtra("isNoteDeleted",true);
+                            setResult(RESULT_OK,intent);
+                            finish();
+
+                        }
+                    }
+
+                    new DeleteNoteTask().execute();
+                }
+            });
+
+            view.findViewById(R.id.textCancelNote).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    alertDialog.dismiss();
+                }
+            });
+        }
+
+        alertDialog.show();
     }
 
     private void selectYourImage() {

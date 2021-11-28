@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+
 @Entity(tableName= "reminder")
 public class MyReminderEntities implements Serializable {
     @PrimaryKey(autoGenerate = true)
