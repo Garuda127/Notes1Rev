@@ -144,6 +144,60 @@
             android:textColor="@color/white"
             android:textSize="13sp" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/add_photo"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_foto"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:src="@drawable/photocamera"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/averia_gruesa_libre"
+            android:text="@string/Add_Photo"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/add_aud"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/img_aud"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_baseline_music_note_24"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/averia_gruesa_libre"
+            android:text="@string/Add_Aud"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
+
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/delete_img1"
