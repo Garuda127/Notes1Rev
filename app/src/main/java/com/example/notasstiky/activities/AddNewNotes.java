@@ -7,11 +7,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.Manifest;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,28 +21,40 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.database.MyNoteDatabase;
 import com.example.notasstiky.entities.MyNoteEntities;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class AddNewNotes extends AppCompatActivity {
 
@@ -49,13 +63,21 @@ private TextView textDateTime,saveNote;
 private View indicator1,indicator2;
 String selectedColor;
 
-ImageView addImg;
+private LinearLayout reclayout;
+ImageView addImg,recImg,imgfoto;
+VideoView videoView;
+MediaController mediaController;
 private String SelectdImg;
-
+private MediaRecorder grabacion;
+private String ArchivoSalida = "";
 private MyNoteEntities alreadyAvailableNote;
-
+private String ruta="";
+int posicionvid = 0;
+    private String videoruta="";
 public static final int STORAGE_PERMISSION = 1;
     public static final int SELECT_IMG = 1;
+    public static final int ADD_PHOTO = 3;
+    public static final int ADD_VIDEO = 4;
 private AlertDialog alertDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -63,7 +85,12 @@ private AlertDialog alertDialog;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_notes);
-
+        recImg=findViewById(R.id.img_rec);
+        if (ContextCompat.checkSelfPermission(AddNewNotes.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(AddNewNotes.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(AddNewNotes.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
+        }
+        videoView=findViewById(R.id.videoview);
+        imgfoto=findViewById(R.id.foto_note);
         indicator1=findViewById(R.id.viewIndicator);
         indicator2=findViewById(R.id.viewIndicator2);
         saveNote=findViewById(R.id.btn_Save_Note);
@@ -71,7 +98,7 @@ private AlertDialog alertDialog;
         inputNoteTitle=findViewById(R.id.input_reminder_title);
         textDateTime=findViewById(R.id.textDateTime);
         addImg=findViewById(R.id.image_note);
-
+reclayout=findViewById(R.id.rec_layout);
         findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +114,7 @@ private AlertDialog alertDialog;
             setViewUpdate();
 
         }
+
 
         saveNote.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +136,50 @@ private AlertDialog alertDialog;
         inputNoteTitle.setText(alreadyAvailableNote.getTitle());
         inputNoteText.setText(alreadyAvailableNote.getNoteText());
         textDateTime.setText(alreadyAvailableNote.getDateTime());
+
         if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()){
 
             addImg.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
             addImg.setVisibility(View.VISIBLE);
             findViewById(R.id.img_remove).setVisibility(View.VISIBLE);
             SelectdImg = alreadyAvailableNote.getImagePath();
+        }
+        if (alreadyAvailableNote.getAudioPath() !=null && !alreadyAvailableNote.getAudioPath().trim().isEmpty()){
+            reclayout.setVisibility(View.VISIBLE);
+            ArchivoSalida = alreadyAvailableNote.getAudioPath();
+        }
+        if (alreadyAvailableNote.getPhotoPath() != null && !alreadyAvailableNote.getPhotoPath().trim().isEmpty()){
+            imgfoto.setVisibility(View.VISIBLE);
+            imgfoto.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getPhotoPath()));
+
+        }
+        if (alreadyAvailableNote.getVideoPath() != null && !alreadyAvailableNote.getVideoPath().trim().isEmpty()){
+            videoView.setVisibility(View.VISIBLE);
+            videoruta=alreadyAvailableNote.getVideoPath();
+            videoView.setVideoPath(getFilesDir()+"/"+alreadyAvailableNote.getVideoPath());
+            if (this.mediaController == null){
+                this.mediaController = new MediaController(AddNewNotes.this);
+                this.mediaController.setAnchorView(videoView);
+                this.videoView.setMediaController(mediaController);
+
+
+            }
+            this.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+
+                    videoView.seekTo(posicionvid);
+                    if (posicionvid == 0){
+                        videoView.start();
+                    }
+                    mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                        @Override
+                        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                            mediaController.setAnchorView(videoView);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -142,8 +208,10 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
+        myNoteEntities.setAudioPath(ArchivoSalida);
         myNoteEntities.setImagePath(SelectdImg);
-
+        myNoteEntities.setPhotoPath(ruta);
+        myNoteEntities.setVideoPath(videoruta);
         if(alreadyAvailableNote !=null){
             myNoteEntities.setId(alreadyAvailableNote.getId());
         }
@@ -170,7 +238,8 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         new SaveNote().execute();
     }
     private void bottonSheet(){
-        final LinearLayout linearLayout= findViewById(R.id.botton_layout);
+
+        final LinearLayout linearLayout= findViewById(R.id.botton_layout);//es el panel del clickme
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(linearLayout);
         linearLayout.findViewById(R.id.bottom_text).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,12 +251,21 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
                 }
             }
         });
+        final LinearLayout addphoto=linearLayout.findViewById(R.id.add_photo);
         final ImageView imgColor1= linearLayout.findViewById(R.id.imageColor1);
         final ImageView imgColor2= linearLayout.findViewById(R.id.imageColor2);
         final ImageView imgColor3= linearLayout.findViewById(R.id.imageColor3);
         final ImageView imgColor4= linearLayout.findViewById(R.id.imageColor4);
+        final LinearLayout addAudio=linearLayout.findViewById(R.id.add_aud);
+        final LinearLayout addVideo=linearLayout.findViewById(R.id.add_Vid);
 
-
+        addAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                reclayout.setVisibility(View.VISIBLE);
+            }
+        });
 
         /*escoger color del sheetDialog y poner palomita*/
         linearLayout.findViewById(R.id.viewColor1).setOnClickListener(new View.OnClickListener() {
@@ -284,7 +362,64 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
             });
         }
 
+        //agregar foto con camara
+        addphoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+                openCamera();
+
+            }
+        });
+
+        //video
+        addVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetBehavior.setState(bottomSheetBehavior.STATE_COLLAPSED);
+                dispatchTakeVideoIntent();
+
+            }
+        });
+
     }
+
+    private void openCamera(){
+        Intent intent = new Intent( MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager())!= null){
+            File fotoArchivo=null;
+            try {
+                fotoArchivo=GuardarImagen();
+            }catch(IOException ex){
+                Log.e("error",ex.toString());
+            }
+            if (fotoArchivo !=null){
+                Uri uri = FileProvider.getUriForFile(this,"com.example.notasstiky.fileprovider",fotoArchivo);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+                startActivityForResult(intent,ADD_PHOTO);
+            }
+
+        }
+    }
+
+    private void dispatchTakeVideoIntent() {
+        Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, ADD_VIDEO);
+        }
+
+    }
+
+    private File GuardarImagen() throws  IOException {
+
+
+        String nombreFoto= "foto_";
+        File directorio =getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File foto = File.createTempFile(nombreFoto,".jpg",directorio);
+        ruta = foto.getAbsolutePath();
+        return foto;
+    }
+
 
     private void showDeleteDialog() {
         if (alertDialog == null){
@@ -359,6 +494,7 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -378,6 +514,63 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
                 }
             }
         }
+        if(requestCode == ADD_PHOTO && resultCode == RESULT_OK){
+            //Bundle extras = data.getExtras();
+            //Bitmap imgBitmap =(Bitmap) extras.get("data");
+            Bitmap imgBitmap=BitmapFactory.decodeFile(ruta);
+            imgfoto.setImageBitmap(imgBitmap);
+            imgfoto.setVisibility(View.VISIBLE);
+        }
+        //video
+        if (requestCode == ADD_VIDEO && resultCode == RESULT_OK) {
+            Uri videoUri = data.getData();
+            videoView.setVideoURI(videoUri);
+            videoView.start();
+            try {
+                AssetFileDescriptor videoAsset = getContentResolver().openAssetFileDescriptor(data.getData(),"r");
+                FileInputStream in = videoAsset.createInputStream();
+                videoruta=crearNombreArchivoMP4();
+                FileOutputStream archivo = openFileOutput(videoruta, Context.MODE_PRIVATE);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf))>0){
+                    archivo.write(buf,0,len);
+                }
+            } catch (IOException e) {
+                Toast.makeText(this, "Error al grabar", Toast.LENGTH_SHORT).show();
+            }
+            if (this.mediaController == null){
+                this.mediaController = new MediaController(AddNewNotes.this);
+                this.mediaController.setAnchorView(videoView);
+                this.videoView.setMediaController(mediaController);
+
+
+            }
+            this.videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+
+                    videoView.seekTo(posicionvid);
+                    if (posicionvid == 0){
+                        videoView.start();
+                    }
+                    mp.setOnVideoSizeChangedListener(new MediaPlayer.OnVideoSizeChangedListener() {
+                        @Override
+                        public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                            mediaController.setAnchorView(videoView);
+                        }
+                    });
+                }
+            });
+            videoView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private String crearNombreArchivoMP4() {
+        String fecha = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String nombre = fecha + ".mp4";
+        return nombre;
     }
 
     private String getPathFromUri(Uri uri){
@@ -395,4 +588,47 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
 
         return filePath;
     }
+//Grabacion
+public void Recorder(View view){
+    final int random = new Random().nextInt(1001);
+        if (grabacion==null){
+
+            ArchivoSalida = getExternalFilesDir(null).getAbsolutePath() + "/"+inputNoteTitle.getText().toString()+random+".mp3";
+        grabacion = new MediaRecorder();
+        grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
+        grabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        grabacion.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        grabacion.setOutputFile(ArchivoSalida);
+        recImg.setImageResource(R.drawable.activaterec);
+        try {
+            grabacion.prepare();
+            grabacion.start();
+        }catch (IOException e){
+
+        }
+
+            Toast.makeText(this, "Grabando...", Toast.LENGTH_SHORT).show();
+        }else if (grabacion!= null){
+            grabacion.stop();
+            grabacion.release();
+            grabacion=null;
+            recImg.setImageResource(R.drawable.ic_baseline_fiber_manual_record_24);
+            Toast.makeText(this, "Grabacion Finalizada!", Toast.LENGTH_SHORT).show();
+        }
+}
+
+public void reproducir(View view){
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    try {
+        mediaPlayer.setDataSource(ArchivoSalida);
+        mediaPlayer.prepare();
+    }catch (IOException e){
+
+    }
+    mediaPlayer.start();
+    Toast.makeText(this, "Reproduciendo Audio", Toast.LENGTH_SHORT).show();
+}
+
+
+
 }

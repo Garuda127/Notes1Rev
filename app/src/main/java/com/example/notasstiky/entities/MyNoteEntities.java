@@ -18,10 +18,30 @@ public class MyNoteEntities implements Serializable {
     private String noteText;
     @ColumnInfo(name = "image_path")
     private String imagePath;
+    @ColumnInfo(name = "photo_path")
+    private String photoPath;
     @ColumnInfo(name = "audio_path")
     private String audioPath;
+    @ColumnInfo(name = "video_path")
+    private String videoPath;
     @ColumnInfo(name = "color")
     private String color;
+
+    public String getVideoPath() {
+        return videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
+    }
+
+    public String getPhotoPath() {
+        return photoPath;
+    }
+
+    public void setPhotoPath(String photoPath) {
+        this.photoPath = photoPath;
+    }
 
     public String getAudioPath() {
         return audioPath;

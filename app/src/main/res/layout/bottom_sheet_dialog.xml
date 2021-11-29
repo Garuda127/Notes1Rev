@@ -197,7 +197,32 @@
             android:textColor="@color/white"
             android:textSize="13sp" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/add_Vid"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="1dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
+        <ImageView
+            android:id="@+id/img_vid"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_baseline_video_call_24"
+            app:tint="@color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/averia_gruesa_libre"
+            android:text="@string/Add_Vid"
+            android:textColor="@color/white"
+            android:textSize="13sp" />
+    </LinearLayout>
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/delete_img1"

@@ -100,6 +100,7 @@
                     android:layout_width="284dp"
                     android:layout_height="37dp"
                     android:layout_marginTop="48dp"
+                    android:onClick="abrir_calendario"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -120,6 +121,7 @@
                         android:layout_weight=".5"
                         android:text="Fecha"
                         android:textColor="#DCDCDC"
+
                         android:textAlignment="center"
                         android:textSize="30sp" />
                 </LinearLayout>
@@ -129,6 +131,7 @@
                     android:layout_width="284dp"
                     android:background="@drawable/fecha_bg"
                     android:layout_height="37dp"
+                    android:onClick="abrir_reloj"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="@+id/View_reminder"
                     app:layout_constraintEnd_toEndOf="parent"
