@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.entities.MyReminderEntities;
+import com.example.notasstiky.listeners.MyNoteListeners;
 import com.example.notasstiky.listeners.MyReminderListeners;
 
 import java.util.List;
@@ -29,12 +30,12 @@ public class MyReminderAdapter extends RecyclerView.Adapter<MyReminderAdapter.Vi
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MyReminderAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_item,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull MyReminderAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
         holder.setReminder(reminderEntities.get(position));
         holder.view.setOnClickListener(new View.OnClickListener() {
