@@ -29,4 +29,5 @@
     <string name="Alarm_delete">Alarm Delete</string>
     <string name="Title_Empty">Title Empty</string>
     <string name="Task_pending">You Have a Pending Task!</string>
+
 </resources>

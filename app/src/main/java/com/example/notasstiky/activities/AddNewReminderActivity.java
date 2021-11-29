@@ -45,7 +45,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
     private LinearLayout linearLayoutHora,linearLayoutFecha;
 
     private MyReminderEntities alreadyAvailableReminder;
-    String selectedReminderColor;
+   String selectedReminderColor;
     private AlertDialog alertDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -53,12 +53,12 @@ public class AddNewReminderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_reminder);
-        TextView saveNote=findViewById(R.id.btn_save_reminder);
-        view = findViewById(R.id.View_reminder);
-        title=findViewById(R.id.input_reminder_title);
-        textDateTime= findViewById(R.id.textDateTime);
-        textFecha=findViewById(R.id.textViewFecha);
-        textHora=findViewById(R.id.textViewHora);
+    TextView saveNote=findViewById(R.id.btn_save_reminder);
+    view = findViewById(R.id.View_reminder);
+    title=findViewById(R.id.input_reminder_title);
+    textDateTime= findViewById(R.id.textDateTime);
+    textFecha=findViewById(R.id.textViewFecha);
+    textHora=findViewById(R.id.textViewHora);
         findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +85,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
         bottomSheet();
         setViewColor();
     }
-    //setea los datos de la bd a el fragment
+//setea los datos de la bd a el fragment
     private void setViewUpdate() {
         title.setText(alreadyAvailableReminder.getTitle());
         textDateTime.setText(alreadyAvailableReminder.getDateTime());
@@ -97,7 +97,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
         if (title.getText().toString().trim().isEmpty()){
             Toast.makeText(this,R.string.Title_Empty,Toast.LENGTH_SHORT).show();
             return;
-        }
+    }
         final MyReminderEntities myNoteEntities = new MyReminderEntities();
         myNoteEntities.setTitle(title.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString().concat(textHora.getText().toString()));
@@ -138,7 +138,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
         Data data = GuardarData("Tienes Una Tarea Pendiente",detalle,random);
         WorkManagerNoti.SaveNoti(alerttime,data,tag);
 
-    }
+}
 
     private void setViewColor() {
         GradientDrawable gradientDrawable = (GradientDrawable) view.getBackground();
@@ -290,7 +290,7 @@ public class AddNewReminderActivity extends AppCompatActivity {
 
 
 
-    //Calendario, hora y Alarma
+//Calendario, hora y Alarma
     private int min,hora,dia,mes,anio;
     Calendar calendar= Calendar.getInstance();
     Calendar actual= Calendar.getInstance();
@@ -299,23 +299,23 @@ public class AddNewReminderActivity extends AppCompatActivity {
 
 
 
-        anio = actual.get(Calendar.YEAR);
-        mes= actual.get(Calendar.MONTH);
-        dia=actual.get(Calendar.DAY_OF_MONTH);
+                anio = actual.get(Calendar.YEAR);
+                mes= actual.get(Calendar.MONTH);
+                dia=actual.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(AddNewReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int y, int m, int d) {
-                calendar.set(Calendar.DAY_OF_MONTH,d);
-                calendar.set(Calendar.MONTH,m);
-                calendar.set(Calendar.YEAR,y);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddNewReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int y, int m, int d) {
+                        calendar.set(Calendar.DAY_OF_MONTH,d);
+                        calendar.set(Calendar.MONTH,m);
+                        calendar.set(Calendar.YEAR,y);
 
-                SimpleDateFormat format = new   SimpleDateFormat("EEEE,dd MMMM yyyy", Locale.getDefault());
-                String strDate=format.format(calendar.getTime());
-                textFecha.setText(strDate);
-            }
-        },anio,mes,dia);//Date
-        datePickerDialog.show();
+                        SimpleDateFormat format = new   SimpleDateFormat("EEEE,dd MMMM yyyy", Locale.getDefault());
+                        String strDate=format.format(calendar.getTime());
+                        textFecha.setText(strDate);
+                    }
+                },anio,mes,dia);//Date
+                datePickerDialog.show();
 
 
 

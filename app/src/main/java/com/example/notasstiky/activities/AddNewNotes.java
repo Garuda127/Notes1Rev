@@ -3,6 +3,7 @@ package com.example.notasstiky.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,14 +16,20 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -34,9 +41,11 @@ import com.example.notasstiky.database.MyNoteDatabase;
 import com.example.notasstiky.entities.MyNoteEntities;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 public class AddNewNotes extends AppCompatActivity {
 
@@ -45,10 +54,15 @@ private TextView textDateTime,saveNote;
 private View indicator1,indicator2;
 String selectedColor;
 
-ImageView addImg;
+ImageView addImg,recImg,playImg;
 private String SelectdImg;
+private MediaRecorder grabacion;
+private String ArchivoSalida = "";
+private MyNoteEntities alreadyAvailableNote;
+
 public static final int STORAGE_PERMISSION = 1;
     public static final int SELECT_IMG = 1;
+private AlertDialog alertDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -64,8 +78,23 @@ public static final int STORAGE_PERMISSION = 1;
         textDateTime=findViewById(R.id.textDateTime);
         addImg=findViewById(R.id.image_note);
 
+        findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         selectedColor="#FF937B";
         SelectdImg="";
+
+        if(getIntent().getBooleanExtra("updateOrView",false)){
+            alreadyAvailableNote = (MyNoteEntities)  getIntent().getSerializableExtra("myNotes");
+            setViewUpdate();
+
+        }
+
+
         saveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,6 +109,20 @@ public static final int STORAGE_PERMISSION = 1;
 
         bottonSheet();
         setViewColor();
+    }
+
+    private void setViewUpdate() {
+        inputNoteTitle.setText(alreadyAvailableNote.getTitle());
+        inputNoteText.setText(alreadyAvailableNote.getNoteText());
+        textDateTime.setText(alreadyAvailableNote.getDateTime());
+        ArchivoSalida = alreadyAvailableNote.getAudioPath();
+        if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()){
+
+            addImg.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
+            addImg.setVisibility(View.VISIBLE);
+            findViewById(R.id.img_remove).setVisibility(View.VISIBLE);
+            SelectdImg = alreadyAvailableNote.getImagePath();
+        }
     }
 
     private void setViewColor() {
@@ -107,7 +150,12 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
+        myNoteEntities.setAudioPath(ArchivoSalida);
         myNoteEntities.setImagePath(SelectdImg);
+
+        if(alreadyAvailableNote !=null){
+            myNoteEntities.setId(alreadyAvailableNote.getId());
+        }
 
 
         class SaveNote extends AsyncTask<Void, Void,Void> {
@@ -147,6 +195,9 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         final ImageView imgColor2= linearLayout.findViewById(R.id.imageColor2);
         final ImageView imgColor3= linearLayout.findViewById(R.id.imageColor3);
         final ImageView imgColor4= linearLayout.findViewById(R.id.imageColor4);
+
+
+
         /*escoger color del sheetDialog y poner palomita*/
         linearLayout.findViewById(R.id.viewColor1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,6 +245,22 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
             }
         });
 
+        ////////////////////////////////////
+        if (alreadyAvailableNote != null && alreadyAvailableNote.getColor()!= null && !alreadyAvailableNote.getColor().trim().isEmpty()){
+
+            switch (alreadyAvailableNote.getColor()){
+                case "#FFFB7B":
+                    linearLayout.findViewById(R.id.viewColor2).performClick();
+                    break;
+                case "#ADFF7B":
+                    linearLayout.findViewById(R.id.viewColor3).performClick();
+                    break;
+                case "#969CFF":
+                    linearLayout.findViewById(R.id.viewColor4).performClick();
+                    break;
+            }
+        }
+
         //////////////////////////////////////////////////Agregar img
         linearLayout.findViewById(R.id.add_img).setOnClickListener(new View.OnClickListener() {
            @Override
@@ -214,6 +281,69 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
 
            }
         });
+
+        if (alreadyAvailableNote != null){
+            linearLayout.findViewById(R.id.delete_img1).setVisibility(View.VISIBLE);
+            linearLayout.findViewById(R.id.delete_img1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    showDeleteDialog();
+                }
+            });
+        }
+
+
+    }
+
+    private void showDeleteDialog() {
+        if (alertDialog == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(AddNewNotes.this);
+            View view = LayoutInflater.from(this).inflate(R.layout.layout_delete_note,
+                    (ViewGroup) findViewById(R.id.layoutDeleteNote_Container));
+
+            builder.setView(view);
+            alertDialog = builder.create() ;
+        if (alertDialog.getWindow() != null){
+            alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        }
+        view.findViewById(R.id.textDeleteNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View view) {
+                class DeleteNoteTask extends  AsyncTask<Void,Void,Void>{
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+
+                        MyNoteDatabase.getMyNoteDatabase(getApplicationContext()).notesDao().deleteNote(alreadyAvailableNote);
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void unused) {
+                        super.onPostExecute(unused);
+
+                        Intent intent = new Intent();
+                        intent.putExtra("isNoteDeleted",true);
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+                    }
+                }
+
+                    new DeleteNoteTask().execute();
+            }
+            });
+
+        view.findViewById(R.id.textCancelNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        }
+
+        alertDialog.show();
     }
 
     private void selectYourImage() {
@@ -275,4 +405,44 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
 
         return filePath;
     }
+//Grabacion
+public void Recorder(View view){
+    final int random = new Random().nextInt(1001);
+        if (grabacion==null){
+            ArchivoSalida = getExternalFilesDir(null).getAbsolutePath() + "/"+inputNoteTitle.getText().toString()+random+".mp3";
+        grabacion = new MediaRecorder();
+        grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
+        grabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        grabacion.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        grabacion.setOutputFile(ArchivoSalida);
+
+        try {
+            grabacion.prepare();
+            grabacion.start();
+        }catch (IOException e){
+
+        }
+
+            Toast.makeText(this, "Grabando...", Toast.LENGTH_SHORT).show();
+        }else if (grabacion!= null){
+            grabacion.stop();
+            grabacion.release();
+            grabacion=null;
+
+            Toast.makeText(this, "Grabacion Finalizada!", Toast.LENGTH_SHORT).show();
+        }
+}
+
+public void reproducir(View view){
+    MediaPlayer mediaPlayer = new MediaPlayer();
+    try {
+        mediaPlayer.setDataSource(ArchivoSalida);
+        mediaPlayer.prepare();
+    }catch (IOException e){
+
+    }
+    mediaPlayer.start();
+    Toast.makeText(this, "Reproduciendo Audio", Toast.LENGTH_SHORT).show();
+}
+
 }

@@ -1,8 +1,12 @@
 package com.example.notasstiky.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.example.notasstiky.R;
@@ -20,7 +24,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, 1000);
+        }
         chipNavigationBar=findViewById(R.id.bottom_navigation_bar);
         chipNavigationBar.setItemSelected(R.id.home,true);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new MyNotesFragment()).commit();
@@ -39,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.reminder:
                         fragment= new ReminderFragment();
                         break;
-                    case R.id.task:
-                        fragment= new TaskFragment();
-                        break;
+
 
                 }
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();

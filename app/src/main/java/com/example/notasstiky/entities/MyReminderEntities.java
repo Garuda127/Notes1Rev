@@ -15,9 +15,30 @@ public class MyReminderEntities implements Serializable {
     private String dateTime;
     @ColumnInfo(name="note_text")
     private String noteText;
+    @ColumnInfo(name = "date_time_complete")
+    private String dateTimeComplete;
+    @ColumnInfo(name = "terminado")
+    private boolean terminado;
 
     @ColumnInfo(name = "color")
     private String color;
+
+
+    public String getDateTimeComplete() {
+        return dateTimeComplete;
+    }
+
+    public void setDateTimeComplete(String dateTimeComplete) {
+        this.dateTimeComplete = dateTimeComplete;
+    }
+
+    public boolean isTerminado() {
+        return terminado;
+    }
+
+    public void setTerminado(boolean terminado) {
+        this.terminado = terminado;
+    }
 
     public int getId() {
         return id;

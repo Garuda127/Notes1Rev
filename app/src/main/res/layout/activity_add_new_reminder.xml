@@ -90,27 +90,72 @@
                     android:background="@drawable/bg_note"
                     app:layout_constraintBaseline_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <EditText
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    android:hint="@string/Reminder_desc"
-                    android:importantForAutofill="no"
-                    android:includeFontPadding="false"
-                    android:inputType="textMultiLine"
-                    android:maxLines="8"
-                    android:minHeight="48dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:singleLine="true"
+                <LinearLayout
+                    android:id="@+id/linearLayoutFecha"
+                    android:background="@drawable/fecha_bg"
+                    android:layout_width="284dp"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="48dp"
+                    android:onClick="abrir_calendario"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/View_reminder"
-                    app:layout_constraintWidth_percent=".7" />
+                    app:layout_constraintTop_toTopOf="@+id/View_reminder">
 
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_baseline_calendar_today_24"
+                        app:tint="#DCDCDC" />
+
+                    <TextView
+                        android:id="@+id/textViewFecha"
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".5"
+                        android:text="Fecha"
+                        android:textColor="#DCDCDC"
+
+                        android:textAlignment="center"
+                        android:textSize="30sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutHora"
+                    android:layout_width="284dp"
+                    android:background="@drawable/fecha_bg"
+                    android:layout_height="37dp"
+                    android:onClick="abrir_reloj"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="@+id/View_reminder"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/View_reminder"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutFecha">
+
+                    <ImageView
+                        android:id="@+id/imageViewHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        app:srcCompat="@drawable/ic_baseline_access_time_24"
+                        app:tint="#DCDCDC" />
+
+                    <TextView
+                        android:id="@+id/textViewHora"
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".5"
+                        android:text="Hora"
+                        android:textColor="#DCDCDC"
+                        android:textAlignment="center"
+                        android:textSize="30sp" />
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
