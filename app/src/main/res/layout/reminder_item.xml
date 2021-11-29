@@ -19,6 +19,25 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
+        android:id="@+id/reminder_complete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#DCDBDB"
+        android:fontFamily="@font/averia_gruesa_libre"
+        android:padding="7dp"
+        android:text="Complete?"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_rem"
+        app:layout_constraintStart_toStartOf="@+id/view_rem"
+        app:layout_constraintTop_toTopOf="@+id/view_rem"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
         android:id="@+id/reminder_Heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

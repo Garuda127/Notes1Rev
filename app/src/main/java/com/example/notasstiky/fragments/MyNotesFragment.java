@@ -4,19 +4,20 @@ import static android.app.Activity.RESULT_OK;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.example.notasstiky.R;
 import com.example.notasstiky.activities.AddNewNotes;
@@ -62,6 +63,26 @@ public class MyNotesFragment extends Fragment implements MyNoteListeners {
     noteEntitiesList = new ArrayList<>();
     myNoteAdapter = new MyNoteAdapter(noteEntitiesList,this);
     noteRec.setAdapter(myNoteAdapter);
+        EditText inputSearch = view.findViewById(R.id.editTextSearch_note);
+inputSearch.addTextChangedListener(new TextWatcher() {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    myNoteAdapter.cancelTimer();
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if (noteEntitiesList.size() != 0 ){
+            myNoteAdapter.searchNote(editable.toString());
+        }
+    }
+});
+
     getAllNotes(SHOW_NOTE,false);
         return view;
     }

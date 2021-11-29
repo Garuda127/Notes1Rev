@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Notes</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="My_Notes">My Notes</string>
     <string name="Reminder">Reminder</string>
     <string name="Task">Task</string>
@@ -15,9 +15,20 @@
     <string name="Reminder_desc">Type Your Reminder Here</string>
     <string name="Task_title">Task title</string>
     <string name="Task_desc">Type Your Task Here</string>
-    <string name="Click_me">Click me</string>
+    <string name="Click_me" translatable="false">Click me</string>
     <string name="Pick_color">Pick color</string>
-    <string name="Heading">Heading</string>
-    <string name="Date_time">Date and Time</string>
+    <string name="Heading" translatable="false">Heading</string>
+    <string name="Date_time" translatable="false">Date and Time</string>
     <string name="Add_image">Add image</string>
+    <string name="Add_Photo">Add Photo</string>
+    <string name="Add_Aud">Add Audio</string>
+    <string name="Delete_Note">Delete Note</string>
+    <string name="Delete_Reminder">Delete Reminder</string>
+    <string name="Delete_confirm">Are you sure you want to delete this note?</string>
+    <string name="Completado">Complete</string>
+    <string name="Pendiente">Pending</string>
+    <string name="Alarm_delete">Alarm Delete</string>
+    <string name="Title_Empty">Title Empty</string>
+    <string name="Task_pending">You Have a Pending Task!</string>
+
 </resources>

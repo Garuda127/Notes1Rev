@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/cinzel_decorative"
+        android:fontFamily="@font/averia_gruesa_libre"
         android:letterSpacing=".2"
         android:text="@string/Reminder"
         android:textColor="@color/black"
@@ -40,6 +40,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="13sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -57,12 +58,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextSearch_reminder" />
+
     <ImageView
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/search_bg"
         android:padding="10dp"
         android:src="@drawable/ic_baseline_person_24"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/editTextSearch_reminder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editTextSearch_reminder" />

@@ -114,6 +114,32 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_indicator"/>
 
+            <LinearLayout
+                android:id="@+id/rec_layout"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/foto_note"
+                android:orientation="horizontal"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:id="@+id/img_play"
+                    android:layout_width="206dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:onClick="reproducir"
+                    app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+
+                <ImageView
+                    android:id="@+id/img_rec"
+                    android:layout_width="206dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:onClick="Recorder"
+                    app:srcCompat="@drawable/ic_baseline_fiber_manual_record_24" />
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/image_note"
                 android:layout_width="match_parent"
@@ -124,17 +150,30 @@
                 android:layout_marginRight="12dp"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/app_name"
-                android:visibility="gone"/>
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/foto_note"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_below="@id/image_note"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="12dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/img_remove"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_below="@id/viewIndicator"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:padding="4dp"
-                android:layout_below="@id/viewIndicator"
                 android:src="@drawable/ic_baseline_delete_24"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </RelativeLayout>
 
