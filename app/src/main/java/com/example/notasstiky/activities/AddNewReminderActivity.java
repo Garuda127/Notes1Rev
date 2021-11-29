@@ -3,12 +3,9 @@ package com.example.notasstiky.activities;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.work.Data;
-import androidx.work.WorkManager;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -19,31 +16,25 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.notasstiky.R;
-import com.example.notasstiky.alarm.WorkManagerNoti;
 import com.example.notasstiky.database.MyNoteDatabase;
+import com.example.notasstiky.entities.MyNoteEntities;
 import com.example.notasstiky.entities.MyReminderEntities;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 public class AddNewReminderActivity extends AppCompatActivity {
     private EditText title;
     private TextView textDateTime,textFecha,textHora;
     private View view;
-    private LinearLayout linearLayoutHora,linearLayoutFecha;
-
     private MyReminderEntities alreadyAvailableReminder;
    String selectedReminderColor;
     private AlertDialog alertDialog;
@@ -95,14 +86,14 @@ public class AddNewReminderActivity extends AppCompatActivity {
 
     private void saveReminder() {
         if (title.getText().toString().trim().isEmpty()){
-            Toast.makeText(this,R.string.Title_Empty,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Titulo de Nota vacia",Toast.LENGTH_SHORT).show();
             return;
     }
         final MyReminderEntities myNoteEntities = new MyReminderEntities();
         myNoteEntities.setTitle(title.getText().toString());
-        myNoteEntities.setDateTime(textDateTime.getText().toString().concat(textHora.getText().toString()));
+        myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setTerminado(false);
-        myNoteEntities.setDateTimeComplete(textFecha.getText().toString());
+        myNoteEntities.setDateTimeComplete("10/10/10");
         myNoteEntities.setColor(selectedReminderColor);
 
         if (alreadyAvailableReminder !=null){
@@ -131,12 +122,6 @@ public class AddNewReminderActivity extends AppCompatActivity {
         }
         new SaveReminder().execute();
 
-        String tag = generatekey();
-        Long alerttime=calendar.getTimeInMillis() - System.currentTimeMillis();
-        int random=(int)(Math.random() * 50+1);
-        String detalle = title.getText().toString();
-        Data data = GuardarData("Tienes Una Tarea Pendiente",detalle,random);
-        WorkManagerNoti.SaveNoti(alerttime,data,tag);
 
 }
 
@@ -282,75 +267,9 @@ public class AddNewReminderActivity extends AppCompatActivity {
                 }
             });
         }
+
         alertDialog.show();
-
-
-
     }
 
 
-
-//Calendario, hora y Alarma
-    private int min,hora,dia,mes,anio;
-    Calendar calendar= Calendar.getInstance();
-    Calendar actual= Calendar.getInstance();
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void abrir_calendario(View view) {
-
-
-
-                anio = actual.get(Calendar.YEAR);
-                mes= actual.get(Calendar.MONTH);
-                dia=actual.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog datePickerDialog = new DatePickerDialog(AddNewReminderActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int y, int m, int d) {
-                        calendar.set(Calendar.DAY_OF_MONTH,d);
-                        calendar.set(Calendar.MONTH,m);
-                        calendar.set(Calendar.YEAR,y);
-
-                        SimpleDateFormat format = new   SimpleDateFormat("EEEE,dd MMMM yyyy", Locale.getDefault());
-                        String strDate=format.format(calendar.getTime());
-                        textFecha.setText(strDate);
-                    }
-                },anio,mes,dia);//Date
-                datePickerDialog.show();
-
-
-
-    }
-
-    public void abrir_reloj(View view) {
-
-        hora = actual.get(Calendar.HOUR_OF_DAY);
-        min=actual.get(Calendar.MINUTE);
-
-        TimePickerDialog timePickerDialog= new TimePickerDialog(AddNewReminderActivity.this, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int h, int m) {
-                calendar.set(Calendar.HOUR_OF_DAY,h);
-                calendar.set(Calendar.MINUTE,m);
-
-                textHora.setText(String.format("%02d:%02d",h,m));
-            }
-        },hora,min, false);
-        timePickerDialog.show();
-    }
-
-    private void eliminarNoti(String tag){
-        WorkManager.getInstance(this).cancelAllWorkByTag(tag);
-        Toast.makeText(AddNewReminderActivity.this, R.string.Alarm_delete, Toast.LENGTH_SHORT).show();
-    }
-
-    private String generatekey(){
-        return UUID.randomUUID().toString();
-    }
-
-    private Data GuardarData(String titulo,String detalle, int id_noti){
-        return  new Data.Builder()
-                .putString("titulo",titulo)
-                .putString("detalle",detalle)
-                .putInt("id_noti",id_noti).build();
-    }
 }

@@ -144,7 +144,6 @@
             android:textColor="@color/white"
             android:textSize="13sp" />
     </LinearLayout>
-
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/delete_img1"

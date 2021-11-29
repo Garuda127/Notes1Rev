@@ -19,13 +19,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.icu.text.SimpleDateFormat;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,11 +38,9 @@ import com.example.notasstiky.database.MyNoteDatabase;
 import com.example.notasstiky.entities.MyNoteEntities;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Random;
 
 public class AddNewNotes extends AppCompatActivity {
 
@@ -54,10 +49,9 @@ private TextView textDateTime,saveNote;
 private View indicator1,indicator2;
 String selectedColor;
 
-ImageView addImg,recImg,playImg;
+ImageView addImg;
 private String SelectdImg;
-private MediaRecorder grabacion;
-private String ArchivoSalida = "";
+
 private MyNoteEntities alreadyAvailableNote;
 
 public static final int STORAGE_PERMISSION = 1;
@@ -94,7 +88,6 @@ private AlertDialog alertDialog;
 
         }
 
-
         saveNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,7 +108,6 @@ private AlertDialog alertDialog;
         inputNoteTitle.setText(alreadyAvailableNote.getTitle());
         inputNoteText.setText(alreadyAvailableNote.getNoteText());
         textDateTime.setText(alreadyAvailableNote.getDateTime());
-        ArchivoSalida = alreadyAvailableNote.getAudioPath();
         if(alreadyAvailableNote.getImagePath() != null && !alreadyAvailableNote.getImagePath().trim().isEmpty()){
 
             addImg.setImageBitmap(BitmapFactory.decodeFile(alreadyAvailableNote.getImagePath()));
@@ -150,7 +142,6 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
         myNoteEntities.setNoteText(inputNoteText.getText().toString());
         myNoteEntities.setDateTime(textDateTime.getText().toString());
         myNoteEntities.setColor(selectedColor);
-        myNoteEntities.setAudioPath(ArchivoSalida);
         myNoteEntities.setImagePath(SelectdImg);
 
         if(alreadyAvailableNote !=null){
@@ -293,7 +284,6 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
             });
         }
 
-
     }
 
     private void showDeleteDialog() {
@@ -405,44 +395,4 @@ if (inputNoteTitle.getText().toString().trim().isEmpty()){
 
         return filePath;
     }
-//Grabacion
-public void Recorder(View view){
-    final int random = new Random().nextInt(1001);
-        if (grabacion==null){
-            ArchivoSalida = getExternalFilesDir(null).getAbsolutePath() + "/"+inputNoteTitle.getText().toString()+random+".mp3";
-        grabacion = new MediaRecorder();
-        grabacion.setAudioSource(MediaRecorder.AudioSource.MIC);
-        grabacion.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        grabacion.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        grabacion.setOutputFile(ArchivoSalida);
-
-        try {
-            grabacion.prepare();
-            grabacion.start();
-        }catch (IOException e){
-
-        }
-
-            Toast.makeText(this, "Grabando...", Toast.LENGTH_SHORT).show();
-        }else if (grabacion!= null){
-            grabacion.stop();
-            grabacion.release();
-            grabacion=null;
-
-            Toast.makeText(this, "Grabacion Finalizada!", Toast.LENGTH_SHORT).show();
-        }
-}
-
-public void reproducir(View view){
-    MediaPlayer mediaPlayer = new MediaPlayer();
-    try {
-        mediaPlayer.setDataSource(ArchivoSalida);
-        mediaPlayer.prepare();
-    }catch (IOException e){
-
-    }
-    mediaPlayer.start();
-    Toast.makeText(this, "Reproduciendo Audio", Toast.LENGTH_SHORT).show();
-}
-
 }
