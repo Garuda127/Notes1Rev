@@ -114,47 +114,44 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_indicator"/>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:id="@+id/rec_layout"
+                android:layout_width="match_parent"
+                android:layout_height="71dp"
+                android:layout_below="@id/foto_note"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:id="@+id/img_play"
+                    android:layout_width="206dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:onClick="reproducir"
+                    app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+
+                <ImageView
+                    android:id="@+id/img_rec"
+                    android:layout_width="206dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:onClick="Recorder"
+                    app:srcCompat="@drawable/ic_baseline_fiber_manual_record_24" />
+            </LinearLayout>
+
+            <VideoView
+                android:id="@+id/videoview"
                 android:layout_width="match_parent"
                 android:layout_height="230dp"
                 android:layout_below="@id/image_note"
-                android:visibility="visible">
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="12dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
 
-
-                <ImageView
-                    android:id="@+id/rec_img"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-                    android:layout_marginEnd="57dp"
-                    android:onClick="Recorder"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/play_img"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_fiber_manual_record_24"
-                    app:tint="@color/white"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-                <ImageView
-                    android:id="@+id/play_img"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp"
-
-                    android:layout_marginStart="64dp"
-                    android:layout_marginEnd="90dp"
-                    android:onClick="reproducir"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/rec_img"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_baseline_play_arrow_24"
-                    app:tint="@color/white"
-                    tools:ignore="SpeakableTextPresentCheck" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
                 android:id="@+id/image_note"
@@ -167,6 +164,20 @@
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/app_name"
                 android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/foto_note"
+                android:layout_width="match_parent"
+                android:layout_height="230dp"
+                android:layout_below="@id/videoview"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="12dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/app_name"
+                android:visibility="gone" />
+
+
 
             <ImageView
                 android:id="@+id/img_remove"

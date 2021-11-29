@@ -99,10 +99,6 @@ public class ReminderFragment extends Fragment implements MyReminderListeners {
                         myNoteAdapter.notifyItemChanged(clickedPosition);
                     }
                 }
-
-
-
-
             }
             }
             new GetAllReminder().execute();

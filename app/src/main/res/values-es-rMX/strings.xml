@@ -22,4 +22,11 @@
     <string name="Completado">Completado</string>
     <string name="Pendiente">Pendiente</string>
     <string name="Delete_Reminder">Borrar Recordatorio</string>
+    <string name="Alarm_delete">Alarma Eliminada</string>
+    <string name="Title_Empty">Titulo Vacio</string>
+    <string name="Task_pending">Tienes una Tarea Pendiente</string>
+    <string name="Add_Aud">Agregar Audio</string>
+    <string name="Add_Photo">Agregar Foto</string>
+    <string name="Click_me" translatable="false">Clickeame</string>
+    <string name="Add_Vid">Tomar Video</string>
 </resources>
