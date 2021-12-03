@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/reminder_bottom"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    app:behavior_peekHeight="40dp"
+    android:background="@drawable/bg_buttom_sheet"
+    app:layout_behavior="@string/bottom_sheet_behavior"
+
+    >
+
+    <TextView
+        android:id="@+id/bottom_text_reminder"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/averia_gruesa_libre"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/Click_me"
+        android:textColor="@color/white"
+        android:textSize="34sp"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <View
+                android:id="@+id/viewReminderColor1"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_reminder_color"/>
+            <ImageView
+                android:id="@+id/imageReminderColor1"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:src="@drawable/ic_baseline_done_24"
+                app:tint="@color/white" />
+
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <View
+                android:id="@+id/viewReminderColor2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_reminder_color2"/>
+            <ImageView
+                android:id="@+id/imageReminderColor2"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+
+                app:tint="@color/white" />
+
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <View
+                android:id="@+id/viewReminderColor3"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_reminder_color3"/>
+            <ImageView
+                android:id="@+id/imageReminderColor3"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+
+                app:tint="@color/white" />
+
+
+        </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+            <View
+                android:id="@+id/viewReminderColor4"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/bg_reminder_color4"/>
+            <ImageView
+                android:id="@+id/imageReminderColor4"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+
+                app:tint="@color/white" />
+
+
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/averia_gruesa_libre"
+            android:includeFontPadding="false"
+            android:text="@string/Pick_color"
+            android:textColor="@color/white"
+            android:textSize="34sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/delete_img1"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/delete_img"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:src="@drawable/ic_baseline_delete_24"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="22dp"
+            android:layout_marginLeft="8dp"
+            android:fontFamily="@font/averia_gruesa_libre"
+            android:text="@string/Delete_Note"
+            android:textColor="@color/white"
+            android:textSize="13sp" /></LinearLayout>
+
+</LinearLayout>

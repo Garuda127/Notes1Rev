@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="8dp">
+
+    <View
+        android:id="@+id/view_rem"
+        android:layout_width="267dp"
+        android:layout_height="290dp"
+        android:background="@drawable/bg_note"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/reminder_complete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#DCDBDB"
+        android:fontFamily="@font/averia_gruesa_libre"
+        android:padding="7dp"
+        android:text="Complete?"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view_rem"
+        app:layout_constraintStart_toStartOf="@+id/view_rem"
+        app:layout_constraintTop_toTopOf="@+id/view_rem"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/reminder_Heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Heading"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view_rem"
+        app:layout_constraintEnd_toEndOf="@+id/view_rem"
+        app:layout_constraintStart_toStartOf="@+id/view_rem"
+        app:layout_constraintTop_toTopOf="@+id/view_rem"
+        app:layout_constraintVertical_bias="0.411" />
+
+    <TextView
+        android:id="@+id/date_reminder"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="#DCDBDB"
+        android:fontFamily="@font/averia_gruesa_libre"
+        android:padding="7dp"
+        android:text="@string/Date_time"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/view_rem"
+        app:layout_constraintEnd_toEndOf="@+id/view_rem"
+        app:layout_constraintStart_toStartOf="@+id/view_rem"
+        app:layout_constraintTop_toTopOf="@+id/view_rem"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
